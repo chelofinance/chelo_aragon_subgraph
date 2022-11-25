@@ -1,0 +1,28 @@
+{
+  "name": "org-subgraph",
+  "version": "2.0.0",
+  "repository": "https://github.com/graphprotocol/aragon-network",
+  "license": "AGPL-3.0",
+  "private": true,
+  "scripts": {
+    "clear": "rm -r build && rm -r generated",
+    "test": "graph test",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "prepare": "graph codegen && graph build",
+    "generate": "graph-compiler --config configs/rinkeby.json --include node_modules/@openzeppelin/subgraphs/src/datasources  --export-schema --export-subgraph",
+    "deploy": "graph deploy --product hosted-service rcontre360/chelo_treasury_rinkeby",
+    "deploy:mumbai": "graph deploy --product hosted-service rcontre360/chelo_treasury_mumbai",
+    "deploy:polygon": "graph deploy --product hosted-service rcontre360/chelo_treasury_polygon",
+    "create-local": "graph create --node http://localhost:8020/ Rcontre360/chelo_treasury",
+    "remove-local": "graph remove --node http://localhost:8020/ Rcontre360/chelo_treasury",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Rcontre360/chelo_treasury"
+  },
+  "dependencies": {
+    "@amxx/graphprotocol-utils": "^1.1.0",
+    "@graphprotocol/graph-cli": "^0.36.1",
+    "@graphprotocol/graph-ts": "^0.29.0",
+    "@openzeppelin/contracts": "^4.8.0",
+    "@openzeppelin/subgraphs": "^0.1.8-5"
+  }
+}

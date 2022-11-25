@@ -1,0 +1,78 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: DaoFactory
+    network: mumbai
+    source:
+      abi: DaoFactory
+      address: "0x81bc5c75ab0937cdbad1f40ac585be6800a39448"
+      startBlock: 18617164
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Organization
+      abis:
+        - name: DaoFactory
+          file: ./abis/DAOFactory.json
+      eventHandlers:
+        - event: DeployDAO(address)
+          handler: handleCreateDao
+      file: ./src/daos.ts
+templates:
+  - kind: ethereum/contract
+    name: erc20
+    network: mumbai
+    source:
+      abi: IERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - ERC20Contract
+      abis:
+        - name: IERC20
+          file: ./node_modules/@openzeppelin/contracts/build/contracts/IERC20Metadata.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./node_modules/@openzeppelin/subgraphs/src/datasources/erc20.ts
+  - kind: ethereum/contract
+    name: Kernel
+    network: mumbai
+    source:
+      abi: Kernel
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Organization
+      abis:
+        - name: Kernel
+          file: ./abis/Kernel.json
+      eventHandlers:
+        - event: SetApp(indexed bytes32,indexed bytes32,address)
+          handler: handleSetApp
+      file: ./src/apps.ts
+  - kind: ethereum/contract
+    name: TokenManager
+    network: mumbai
+    source:
+      abi: TokenManager
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Organization
+      abis:
+        - name: TokenManager
+          file: ./abis/TokenManager.json
+      file: ./src/apps.ts
